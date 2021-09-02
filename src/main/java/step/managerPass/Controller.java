@@ -10,7 +10,7 @@ import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@RestController()
 public class Controller {
     final
     ServiceRepository serviceRepository;
@@ -36,7 +36,7 @@ public class Controller {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.POST}, path = "addService",
+    @RequestMapping(method = {RequestMethod.POST}, path = "/addService",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Service> addService(@RequestBody Service newService) {
@@ -48,10 +48,26 @@ public class Controller {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.DELETE}, path = "deleteService/{id}")
+    @RequestMapping(method = {RequestMethod.DELETE}, path = "/deleteService/{id}")
     public ResponseEntity<Service> deleteService(@PathVariable Integer id) {
         serviceRepository.deleteById(id);
-        return  new ResponseEntity <>(null, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = {RequestMethod.PUT}, path = "/updateService/{id}")
+    public ResponseEntity<Service> updateService(@RequestBody Service newService, @PathVariable Integer id) {
+        serviceRepository.findById(id).map(service -> {
+            service.setName(newService.getName());
+            service.setId(newService.getId());
+            serviceRepository.save(service);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        })
+                .orElseGet(() -> {
+                    newService.setId(id);
+                    serviceRepository.save(newService);
+                    return new ResponseEntity(null, HttpStatus.CREATED);
+                });
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
 
