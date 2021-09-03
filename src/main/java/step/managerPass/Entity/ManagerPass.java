@@ -30,8 +30,7 @@ public class ManagerPass {
 
     private String pass;
 
-    private Integer id_information;
-    @OneToOne(cascade = CascadeType.ALL)
+     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_information", referencedColumnName = "id_information")
     private Information information;
 

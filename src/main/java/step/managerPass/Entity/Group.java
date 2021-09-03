@@ -15,6 +15,4 @@ public class Group {
 
     private String name;
 
-    @ManyToMany
-    private Set<User> groupUsers;
 }
