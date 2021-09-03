@@ -1,30 +1,28 @@
-package step.managerPass;
+package step.managerPass.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import step.managerPass.Repository.ServiceRepository;
 
-import java.rmi.ServerException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController()
-public class Controller {
-    final
-    ServiceRepository serviceRepository;
+@Service
+public class ServiceService {
+    private final ServiceRepository serviceRepository;
 
-
-    public Controller(ServiceRepository serviceRepository) {
+    public ServiceService(ServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
     }
 
-
-    @RequestMapping(path = "/services", method = RequestMethod.GET)
-    public ResponseEntity<List<Service>> getAllServices(@RequestParam(required = false) String service) {
+    public ResponseEntity<List<step.managerPass.Entity.Service>> getAllServices() {
         try {
-            List<Service> services = new ArrayList<>();
+            List<step.managerPass.Entity.Service> services = new ArrayList<>();
 
             serviceRepository.findAll().forEach(services::add);
             if (services.isEmpty()) {
@@ -36,11 +34,8 @@ public class Controller {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.POST}, path = "/addService",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Service> addService(@RequestBody Service newService) {
-        Service service = serviceRepository.save(newService);
+    public ResponseEntity<step.managerPass.Entity.Service> addService(@RequestBody step.managerPass.Entity.Service newService) {
+        step.managerPass.Entity.Service service = serviceRepository.save(newService);
         if (service == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } else {
@@ -48,26 +43,23 @@ public class Controller {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.DELETE}, path = "/deleteService/{id}")
-    public ResponseEntity<Service> deleteService(@PathVariable Integer id) {
+    public ResponseEntity<step.managerPass.Entity.Service> deleteService(@PathVariable Integer id) {
         serviceRepository.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @RequestMapping(method = {RequestMethod.PUT}, path = "/updateService/{id}")
-    public ResponseEntity<Service> updateService(@RequestBody Service newService, @PathVariable Integer id) {
-        serviceRepository.findById(id).map(service -> {
+    public ResponseEntity<step.managerPass.Entity.Service> updateService(@RequestBody step.managerPass.Entity.Service newService, @PathVariable Long id) {
+        serviceRepository.findById(Math.toIntExact(id)).map(service -> {
             service.setName(newService.getName());
-            service.setId(newService.getId());
+            service.setId_service(newService.getId_service());
             serviceRepository.save(service);
             return new ResponseEntity<>(null, HttpStatus.OK);
         })
                 .orElseGet(() -> {
-                    newService.setId(id);
+                    newService.setId_service(id);
                     serviceRepository.save(newService);
                     return new ResponseEntity(null, HttpStatus.CREATED);
                 });
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
-
