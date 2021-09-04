@@ -1,4 +1,4 @@
 package step.managerPass.Repository;
 
-public class GroupRepository {
+public interface GroupRepository {
 }

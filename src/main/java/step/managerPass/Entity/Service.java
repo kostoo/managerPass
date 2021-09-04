@@ -15,4 +15,8 @@ public class Service {
     private String name;
     private String comment;
 
+    public Service(Long id_service, String name) {
+        this.id_service = id_service;
+        this.name = name;
+    }
 }
