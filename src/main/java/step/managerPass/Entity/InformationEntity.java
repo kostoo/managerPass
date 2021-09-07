@@ -6,9 +6,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Information {
+@Table(name = "information")
+public class InformationEntity {
 
-    //  встроенный ключ
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_information;
