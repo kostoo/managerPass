@@ -8,19 +8,20 @@ import java.util.Date;
 
 @Data
 @Entity
-public class ManagerPass {
-    //  встроенный ключ
+@Table(name = "manager_pass")
+public class ManagerPassEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_service")
-    private Service service;
+    private ServiceEntity service;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
-    private User user;
+    private UserEntity userEntity;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "created_on")
@@ -30,8 +31,8 @@ public class ManagerPass {
 
     private String pass;
 
-     @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_information", referencedColumnName = "id_information")
-    private Information information;
+    private InformationEntity informationEntity;
 
 }

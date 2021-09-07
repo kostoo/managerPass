@@ -7,8 +7,9 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Group {
-    //  встроенный ключ
+@Table(name = "group_access")
+public class GroupEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

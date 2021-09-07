@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "Service")
-public class Service {
+@RequiredArgsConstructor
+@Table(name = "service")
+public class ServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +16,7 @@ public class Service {
     private String name;
     private String comment;
 
-    public Service(Long id_service, String name) {
+    public ServiceEntity(Long id_service, String name) {
         this.id_service = id_service;
         this.name = name;
     }
