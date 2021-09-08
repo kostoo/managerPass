@@ -15,5 +15,5 @@ public interface UserEntityRepository extends PagingAndSortingRepository<UserEnt
 
     List<UserEntity> findAllByLastName(@Param("last_name") String last_name);
 
-    UserEntity findUserEntityById_user(@Param("id_user") Long id);
+    UserEntity findUserEntityByIdUser(@Param("id_user") Long id);
 }
