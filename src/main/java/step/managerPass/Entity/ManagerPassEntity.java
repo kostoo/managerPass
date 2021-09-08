@@ -31,8 +31,6 @@ public class ManagerPassEntity {
 
     private String pass;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_information", referencedColumnName = "id_information")
-    private InformationEntity informationEntity;
+    private String comment;
 
 }
