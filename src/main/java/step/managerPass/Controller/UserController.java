@@ -3,6 +3,7 @@ package step.managerPass.Controller;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import step.managerPass.Entity.UserEntity;
@@ -13,13 +14,25 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(name = "/user")
 @RequiredArgsConstructor
 public class UserController {
 
     UserEntityService userService;
 
-    @RequestMapping(path = "/getAllUser", method = RequestMethod.GET)
+    @RequestMapping(path = "/getAllTest", method = RequestMethod.GET)
+    public List<UserEntity> getAllRecords() {
+        return userService.getAllUser();
+    }
+
+    @RequestMapping(path = "/getTest", method = RequestMethod.GET)
+    public HttpStatus getTest() {
+
+        return HttpStatus.OK;
+    }
+
+    @RequestMapping(path = "/getAllUser", method = RequestMethod.GET,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserEntity>> getUserGetAll() {
 
         List<UserEntity> users = new ArrayList<>(userService.getAllUser());
@@ -49,7 +62,9 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/getUser/{idUser}", method = RequestMethod.GET)
+    @RequestMapping(path = "/getUser/{idUser}", method = RequestMethod.GET,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUserByIdUser(@PathVariable(value = "idUser") Long id_user) {
 
         Optional<UserEntity> user = Optional.of(userService.getUserById(id_user));
@@ -57,7 +72,9 @@ public class UserController {
         return ResponseEntity.ok().body(user.get());
     }
 
-    @RequestMapping(path = "/addUser", method = RequestMethod.POST)
+    @RequestMapping(path = "/addUser", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity postAddUser(@RequestBody UserEntity userEntity) {
 
         userService.addUser(userEntity);
@@ -72,5 +89,6 @@ public class UserController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
 
 }
