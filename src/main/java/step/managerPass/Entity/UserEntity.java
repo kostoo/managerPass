@@ -12,20 +12,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "employee")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id_user;
+    @Column(name = "id_user")
+    private Long idUser;
 
     private String name;
     @Column(name = "last_name")
     private String lastName;
 
-    public UserEntity(Long id_user, String name, String last_name) {
-        this.id_user = id_user;
+    public UserEntity(Long idUser, String name, String lastName) {
+        this.idUser = idUser;
         this.name = name;
-        this.lastName = last_name;
+        this.lastName = lastName;
     }
 
     @ManyToMany
