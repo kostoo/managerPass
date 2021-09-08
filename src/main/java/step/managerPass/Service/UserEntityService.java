@@ -26,7 +26,7 @@ public class UserEntityService {
         return userEntityRepository.findAllByLastName(last_name);
     }
 
-    public Boolean deleteUserById(Long id) throws NotFoundException  {
+    public Boolean deleteUserById(Long id) throws NotFoundException {
         Boolean present = userEntityRepository.findById(id).isPresent();
         if (!present) {
             throw new NotFoundException("Пользователь с этим идентификатором " + id + " не найден");
@@ -36,20 +36,23 @@ public class UserEntityService {
 
     public UserEntity getUserById(Long id_user) {
 
-        return userEntityRepository.findUserEntityById_user(id_user);
+        return userEntityRepository.findUserEntityByIdUser(id_user);
     }
 
-    public void addUser(UserEntity userEntity) {
-        userEntityRepository.save(userEntity);
+    public UserEntity addUser(UserEntity userEntity) {
+
+        return userEntityRepository.save(userEntity);
     }
 
     public UserEntity updateUser(UserEntity userEntity) throws NotFoundException {
-        if (userEntity == null || userEntity.getId_user() == null) {
+
+        if (userEntity == null || userEntity.getIdUser() == null) {
             throw new InvalidRequestStateException("Объект или идентификатор не может быть пустым");
         }
-        Optional<UserEntity> optionalUserEntity = userEntityRepository.findById(userEntity.getId_user());
+
+        Optional<UserEntity> optionalUserEntity = userEntityRepository.findById(userEntity.getIdUser());
         if (optionalUserEntity.isPresent()) {
-            throw new NotFoundException("Невозможно найти пользователя " + userEntity.getId_user() + "с таким идентификатором");
+            throw new NotFoundException("Невозможно найти пользователя " + userEntity.getIdUser() + "с таким идентификатором");
         }
         UserEntity existingUserEntity = optionalUserEntity.get();
         existingUserEntity.setName(userEntity.getName());
